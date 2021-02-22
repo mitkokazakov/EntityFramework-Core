@@ -273,5 +273,40 @@ namespace SoftUni
 
             return sb.ToString().TrimEnd();
         }
+
+
+        // Task 12
+
+        public static string IncreaseSalaries(SoftUniContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var increasedEmployees = context.Employees.Where(e => e.Department.Name == "Engineering" ||
+                                                                  e.Department.Name == "Tool Design" ||
+                                                                  e.Department.Name == "Marketing" ||
+                                                                  e.Department.Name == "Information Services"
+                                                                    );
+
+            foreach (var e in increasedEmployees)
+            {
+                e.Salary += e.Salary * 0.12m;
+            }
+
+            context.SaveChanges();
+
+            var infoEmployees = increasedEmployees.Select(e => new
+            {
+                e.FirstName,
+                e.LastName,
+                e.Salary
+            }).OrderBy(e => e.FirstName).ThenBy(e => e.LastName);
+
+            foreach (var e in infoEmployees)
+            {
+                sb.AppendLine($"{e.FirstName} {e.LastName} (${e.Salary:f2})");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }
