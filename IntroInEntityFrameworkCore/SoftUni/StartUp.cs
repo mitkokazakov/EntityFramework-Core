@@ -361,5 +361,34 @@ namespace SoftUni
             }
             return sb.ToString().TrimEnd();
         }
+
+
+        // Task 15
+
+        public static string RemoveTown(SoftUniContext context)
+        {
+            Town town = context.Towns.FirstOrDefault(t => t.Name == "Seattle");
+
+            var addressesToDel = context.Addresses.Where(a => a.TownId == town.TownId);
+
+            int count = addressesToDel.Count();
+
+            var employees = context.Employees.Where(e => addressesToDel.Any(a => a.AddressId == e.AddressId));
+
+            foreach (var e in employees)
+            {
+                e.AddressId = null;
+            }
+
+            foreach (var a in addressesToDel)
+            {
+                context.Addresses.Remove(a);
+            }
+
+            context.Towns.Remove(town);
+
+            context.SaveChanges();
+            return $"{count} addresses in {town.Name} were deleted";
+        }
     }
 }
