@@ -308,5 +308,27 @@ namespace SoftUni
 
             return sb.ToString().TrimEnd();
         }
+
+
+        // Task 13
+
+        public static string GetEmployeesByFirstNameStartingWithSa(SoftUniContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var employees = context.Employees.Where(e => e.FirstName.ToLower().StartsWith("sa")).Select(e => new
+            {
+                e.FirstName,
+                e.LastName,
+                e.JobTitle,
+                e.Salary
+            }).OrderBy(e => e.FirstName).ThenBy(e => e.LastName).ToList();
+
+            foreach (var e in employees)
+            {
+                sb.AppendLine($"{e.FirstName} {e.LastName} - {e.JobTitle} - (${e.Salary:f2})");
+            }
+            return sb.ToString().TrimEnd();
+        }
     }
 }
