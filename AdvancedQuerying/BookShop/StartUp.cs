@@ -97,5 +97,32 @@
 
             return String.Join(Environment.NewLine, books);
         }
+
+	// Task 7
+
+        public static string GetBooksReleasedBefore(BookShopContext context, string date)
+        {
+            var parsedInput = DateTime.Parse(date);
+
+            StringBuilder sb = new StringBuilder();
+
+            var booksBeforeYear = context.Books
+                .Where(b => b.ReleaseDate < parsedInput)
+                .OrderByDescending(b => b.ReleaseDate)
+                .Select(b => new
+                {
+                    b.Title,
+                    BookType = b.EditionType.ToString(),
+                    BookPice = b.Price
+                })
+                .ToList();
+
+            foreach (var book in booksBeforeYear)
+            {
+                sb.AppendLine($"{book.Title} - {book.BookType} - ${book.BookPice:f2}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }
