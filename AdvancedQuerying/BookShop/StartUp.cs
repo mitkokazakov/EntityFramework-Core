@@ -145,5 +145,19 @@
 
             return sb.ToString().TrimEnd();
         }
+
+
+        // Task 9
+
+        public static string GetBookTitlesContaining(BookShopContext context, string input)
+        {
+            var bookTitles = context.Books
+                .Where(b => b.Title.ToLower().Contains(input.ToLower()))
+                .OrderBy(b => b.Title)
+                .Select(b => b.Title)
+                .ToList();
+
+            return String.Join(Environment.NewLine, bookTitles);
+        }
     }
 }
