@@ -159,5 +159,28 @@
 
             return String.Join(Environment.NewLine, bookTitles);
         }
+
+	// Task 10
+
+        public static string GetBooksByAuthor(BookShopContext context, string input)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var books = context.Books
+                .Where(b => b.Author.LastName.ToLower().StartsWith(input.ToLower()))
+                .OrderBy(b => b.BookId)
+                .Select(b => new {
+                    b.Title,
+                    FullName = b.Author.FirstName + ' ' + b.Author.LastName
+                })
+                .ToList();
+
+            foreach (var book in books)
+            {
+                sb.AppendLine($"{book.Title} ({book.FullName})");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }
