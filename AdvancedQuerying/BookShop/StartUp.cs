@@ -182,5 +182,20 @@
 
             return sb.ToString().TrimEnd();
         }
+
+ 	// Task 11
+
+        public static int CountBooks(BookShopContext context, int lengthCheck)
+        {
+            int result = 0;
+
+            var booksWithLongerTitle = context.Books
+                .Where(b => b.Title.Length > lengthCheck)
+                .ToList();
+
+            result = booksWithLongerTitle.Count();
+
+            return result;
+        }
     }
 }
