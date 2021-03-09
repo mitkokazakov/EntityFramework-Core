@@ -219,5 +219,32 @@
 
             return sb.ToString().TrimEnd();
         }
+
+
+        // Task 13
+
+        public static string GetTotalProfitByCategory(BookShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var profits = context.Categories
+                .Select(c => new {
+                    CatName = c.Name,
+                    TotalProfit = c.CategoryBooks
+                                    .Select(cb => new {
+                                        Profit = cb.Book.Price * cb.Book.Copies
+                                    }).Sum(b => b.Profit)
+                })
+                .OrderByDescending(p => p.TotalProfit)
+                .ThenBy(p => p.CatName);
+
+
+            foreach (var p in profits)
+            {
+                sb.AppendLine($"{p.CatName} ${p.TotalProfit:f2}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }
