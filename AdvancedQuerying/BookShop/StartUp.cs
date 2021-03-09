@@ -197,5 +197,27 @@
 
             return result;
         }
+
+
+        // Task 12
+
+        public static string CountCopiesByAuthor(BookShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var tototalBookCopies = context.Authors.Select(a => new
+            {
+                FullName = a.FirstName + ' ' + a.LastName,
+                TotalCopies = a.Books.Sum(b => b.Copies)
+            })
+                .OrderByDescending(b => b.TotalCopies).ToList();
+
+            foreach (var author in tototalBookCopies)
+            {
+                sb.AppendLine($"{author.FullName} - {author.TotalCopies}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }
