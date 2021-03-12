@@ -281,5 +281,21 @@
 
             return sb.ToString().TrimEnd();
         }
+
+
+        // Task 15
+
+        public static void IncreasePrices(BookShopContext context)
+        {
+            var booksPriceToIncrease = context.Books
+                .Where(b => b.ReleaseDate.Value.Year < 2010);
+
+            foreach (var book in booksPriceToIncrease)
+            {
+                book.Price += 5;
+            }
+
+            context.SaveChanges();
+        }
     }
 }
