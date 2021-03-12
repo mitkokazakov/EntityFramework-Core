@@ -246,5 +246,40 @@
 
             return sb.ToString().TrimEnd();
         }
+
+
+
+        // Task 14
+
+        public static string GetMostRecentBooks(BookShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var mostRecentBooks = context.Categories.Select(c => new
+            {
+                CategoryName = c.Name,
+                RecentBooks = c.CategoryBooks
+                                .Select(cb => new
+                                {
+                                    BookTitle = cb.Book.Title,
+                                    BookReleaseDate = cb.Book.ReleaseDate
+                                }).OrderByDescending(b => b.BookReleaseDate)
+                                .Take(3)
+                                .ToList()
+            }).OrderBy(c => c.CategoryName)
+            .ToList();
+
+            foreach (var item in mostRecentBooks)
+            {
+                sb.AppendLine($"--{item.CategoryName}");
+
+                foreach (var book in item.RecentBooks)
+                {
+                    sb.AppendLine($"{book.BookTitle} ({book.BookReleaseDate.Value.Year})");
+                }
+            }
+
+            return sb.ToString().TrimEnd();
+        }
     }
 }
