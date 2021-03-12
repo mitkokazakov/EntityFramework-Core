@@ -297,5 +297,28 @@
 
             context.SaveChanges();
         }
+
+
+        // Task 16
+
+        public static int RemoveBooks(BookShopContext context)
+        {
+            int result = 0;
+
+            var booksToDelete = context.Books.Where(b => b.Copies < 4200);
+
+            result = booksToDelete.Count();
+
+            foreach (var book in booksToDelete)
+            {
+                context.Books.Remove(book);
+            }
+
+            context.SaveChanges();
+
+
+
+            return result;
+        }
     }
 }
