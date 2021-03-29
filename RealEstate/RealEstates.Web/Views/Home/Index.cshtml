@@ -1,0 +1,28 @@
+﻿@model ICollection<RealEstates.Services.ViewModels.DistrictViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">List some Districts</h1>
+
+    <table class="border-success">
+        <tr>
+            <th>District</th>
+            <th>Min. Price</th>
+            <th>Max. Price</th>
+            <th>TotalCount</th>
+        </tr>
+
+        @foreach (var district in this.Model.Where(d => d.MinValue > 100))
+        { 
+            <tr>
+            <td>@district.Name</td>
+            <td>@district.MinValue</td>
+            <td>@district.MaxValue</td>
+            <td>@district.TotalEstates</td>
+            </tr>
+        }
+    </table>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
